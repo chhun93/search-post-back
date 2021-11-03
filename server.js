@@ -1,6 +1,6 @@
 const http = require("http");
 
-const PORT = 3000;
+const PORT = 3030;
 const server = http.createServer((req, res) => {
   const splitUrl = req.url.split("/");
 
@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
         break;
       case 3 === splitUrl.length:
         res.statusCode = 200;
-        res.end(`GET ${splitUrl[2]}`);
+        res.end(`{"GET": "${splitUrl[2]}"}`);
         break;
       default:
         res.statusCode = 404;
