@@ -25,4 +25,4 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(PORT, () => console.log("Server is opened."));
+server.listen(process.env.PORT || PORT, () => console.log("Server is opened."));
