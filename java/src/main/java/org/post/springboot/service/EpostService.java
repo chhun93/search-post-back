@@ -1,14 +1,13 @@
 package org.post.springboot.service;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.ResponseExtractor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+@Service
 public class EpostService implements ApiService {
 
     private static final String URL = "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1={sid1}";
@@ -43,6 +42,7 @@ public class EpostService implements ApiService {
             resultMap.put("time", ret);
 
             end = word.indexOf("</td>", end + 1);
+
             start = word.indexOf("<td>", end);
             end = word.indexOf(" ", start);
             ret = word.substring(start + 4, end).trim();
