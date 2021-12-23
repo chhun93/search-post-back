@@ -1,2 +1,1 @@
-web: node server.js
-
+web: java -jar build/libs/search-post-back-1.0-SNAPSHOT.jar
