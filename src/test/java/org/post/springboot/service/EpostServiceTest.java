@@ -51,8 +51,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("2021.08.13");
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("date")).isEqualTo("2021-08-13T11:12");
         assertThat(result.get(0).get("state")).isEqualTo("배달준비");
     }
 
@@ -87,10 +86,7 @@ public class EpostServiceTest {
         List<Map<String, String>> result = apiService.getProcessList(body);
 
         //then
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEmpty();
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
@@ -124,10 +120,7 @@ public class EpostServiceTest {
         List<Map<String, String>> result = apiService.getProcessList(body);
 
         //then
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
-        assertThat(result.get(0).get("time")).isEmpty();
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
@@ -154,8 +147,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("date")).isEqualTo("1993-04-11T11:12");
         assertThat(result.get(0).get("state")).isEqualTo("</td>");
     }
 }
