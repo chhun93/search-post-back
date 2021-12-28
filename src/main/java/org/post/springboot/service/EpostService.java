@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -19,36 +21,39 @@ public class EpostService implements ApiService {
 
         List<Map<String, String>> resultList = new ArrayList<>();
 
-        int processTablePosition = body.indexOf("processTable");
-        int tbodyStartPosition = body.indexOf("tbody", processTablePosition);
-        int tbodyEndPosition = body.indexOf("/tbody", tbodyStartPosition);
+        try {
+            int processTablePosition = body.indexOf("processTable");
+            int tbodyStartPosition = body.indexOf("tbody", processTablePosition);
+            int tbodyEndPosition = body.indexOf("/tbody", tbodyStartPosition);
 
-        String[] stateList = body.substring(tbodyStartPosition, tbodyEndPosition)
-                .replaceAll("</tr>", " ")
-                .split("<tr>");
+            String[] stateList = body.substring(tbodyStartPosition, tbodyEndPosition)
+                    .replaceAll("</tr>", " ")
+                    .split("<tr>");
 
-        stateList = Arrays.copyOfRange(stateList, 1, stateList.length);
+            stateList = Arrays.copyOfRange(stateList, 1, stateList.length);
 
-        for (String word : stateList) {
-            Map<String, String> resultMap = new HashMap<>();
-            int start = word.indexOf("<td>");
-            int end = word.indexOf("</td>", start);
-            String ret = word.substring(start + 4, end);
-            resultMap.put("date", ret);
+            for (String word : stateList) {
+                Map<String, String> resultMap = new HashMap<>();
+                int start = word.indexOf("<td>");
+                int end = word.indexOf("</td>", start);
+                String ret = word.substring(start + 4, end);
 
-            start = word.indexOf("<td>", end);
-            end = word.indexOf("</td>", start);
-            ret = word.substring(start + 4, end);
-            resultMap.put("time", ret);
+                start = word.indexOf("<td>", end);
+                end = word.indexOf("</td>", start);
+                ret = ret + " " + word.substring(start + 4, end);
+                resultMap.put("date", LocalDateTime.parse(ret, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")).toString());
 
-            end = word.indexOf("</td>", end + 1);
+                end = word.indexOf("</td>", end + 1);
 
-            start = word.indexOf("<td>", end);
-            end = word.indexOf(" ", start);
-            ret = word.substring(start + 4, end).trim();
-            resultMap.put("state", ret);
+                start = word.indexOf("<td>", end);
+                end = word.indexOf(" ", start);
+                ret = word.substring(start + 4, end).trim();
+                resultMap.put("state", ret);
 
-            resultList.add(resultMap);
+                resultList.add(resultMap);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return resultList;
     }
