@@ -25,14 +25,33 @@ const server = http.createServer((req, res) => {
           let test_Json;
           if (splitUrl[2] === "1234") {
             let testJsonArray = [];
-            testJsonArray.push({ key: "0", id: "cu", state: "READY" });
-            testJsonArray.push({ key: "1", id: "우체국", state: "READY" });
-            
+            testJsonArray.push({
+              key: "0",
+              id: "0",
+              name: "CU",
+              state: "GO",
+              current: {
+                state1: "12.28(화) 18:23-경기일산웨돔",
+                state2: "12.28(화) 22:52-곤지암Hub",
+                state3: "12.28(화) 22:56-곤지암Hub",
+                state4: "12.29(수) 06:36-천안동",
+                state5: "12.29(수) 06:39-천안동",
+                state6: "12.29(수) 11:31-천안천안하나",
+              },
+            });
+            testJsonArray.push({
+              key: "1",
+              id: "1",
+              name: "우체국",
+              state: "READY",
+              current: "",
+            });
+
             test_Json = testJsonArray;
           } else if (0 < splitUrl[2].trim().length) {
             test_Json = [];
           } else reject("error");
-          
+
           res.write(JSON.stringify(test_Json));
           resolve(test_Json);
         }, 1500);
