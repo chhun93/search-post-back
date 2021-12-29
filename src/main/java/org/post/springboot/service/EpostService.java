@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -37,11 +35,12 @@ public class EpostService implements ApiService {
                 int start = word.indexOf("<td>");
                 int end = word.indexOf("</td>", start);
                 String ret = word.substring(start + 4, end);
+                resultMap.put("date", ret);
 
                 start = word.indexOf("<td>", end);
                 end = word.indexOf("</td>", start);
-                ret = ret + " " + word.substring(start + 4, end);
-                resultMap.put("date", LocalDateTime.parse(ret, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")).toString());
+                ret = word.substring(start + 4, end);
+                resultMap.put("time", ret);
 
                 end = word.indexOf("</td>", end + 1);
 
