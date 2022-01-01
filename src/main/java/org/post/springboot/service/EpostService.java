@@ -66,6 +66,7 @@ public class EpostService implements ApiService {
         params.put("sid1", number);
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL, String.class, params);
 
+        result.put("companyName", "epost");
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             result.put("result", getProcessList(responseEntity.getBody()));
         } else {
