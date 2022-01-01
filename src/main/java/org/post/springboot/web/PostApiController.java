@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -22,8 +24,11 @@ public class PostApiController {
     }
 
     @GetMapping(path = "/api/v1/post-man")
-    public Map<String, Object> getList(@RequestParam(name = "tracking-number") String trackingNumber) {
-        return serviceMap.get("epost").execute(trackingNumber);
+    public Map<String, List<Object>> getList(@RequestParam(name = "tracking-number") String trackingNumber) {
+        Map<String, List<Object>> result = new HashMap<>();
+        result.put("response", new ArrayList<>());
+        result.get("response").add(serviceMap.get("epost").execute(trackingNumber));
+        return result;
     }
 
     @GetMapping(path = "/api/v1/post-man/{id}")
