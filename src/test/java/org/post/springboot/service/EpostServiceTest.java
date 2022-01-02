@@ -22,7 +22,8 @@ public class EpostServiceTest {
     @Test
     public void 올바른_형식_파싱() {
         //given
-        String body = "<tbody>\n" +
+        String body = "<table id=\"processTable\" class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -44,7 +45,8 @@ public class EpostServiceTest {
                 "       \t  \n" +
                 "\n" +
                 "        \t\n" +
-                "\t\t\t\t</tbody>";
+                "\t\t\t\t</tbody>" +
+                "</table>";
 
         //when
         List<Map<String, String>> result = apiService.getProcessList(body);
@@ -59,7 +61,8 @@ public class EpostServiceTest {
     @Test
     public void 날짜값_없는_형식_파싱() {
         //given
-        String body = "<tbody>\n" +
+        String body = "<table id=\"processTable\" class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -81,7 +84,8 @@ public class EpostServiceTest {
                 "       \t  \n" +
                 "\n" +
                 "        \t\n" +
-                "\t\t\t\t</tbody>";
+                "\t\t\t\t</tbody>" +
+                "</table>";
 
         //when
         List<Map<String, String>> result = apiService.getProcessList(body);
@@ -96,7 +100,8 @@ public class EpostServiceTest {
     @Test
     public void 시간값_없는_형식_파싱() {
         //given
-        String body = "<tbody>\n" +
+        String body = "<table id=\"processTable\" class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -118,7 +123,8 @@ public class EpostServiceTest {
                 "       \t  \n" +
                 "\n" +
                 "        \t\n" +
-                "\t\t\t\t</tbody>";
+                "\t\t\t\t</tbody>" +
+                "</table>";
 
         //when
         List<Map<String, String>> result = apiService.getProcessList(body);
@@ -133,7 +139,8 @@ public class EpostServiceTest {
     @Test
     public void 상태값_없는_형식_파싱() {
         //given
-        String body = "<tbody>\n" +
+        String body = "<table id=\"processTable\" class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -147,7 +154,8 @@ public class EpostServiceTest {
                 "       \t  \n" +
                 "\n" +
                 "        \t\n" +
-                "\t\t\t\t</tbody>";
+                "\t\t\t\t</tbody>" +
+                "</table>";
 
         //when
         List<Map<String, String>> result = apiService.getProcessList(body);
@@ -156,6 +164,6 @@ public class EpostServiceTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
         assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("state")).isEqualTo("</td>");
+        assertThat(result.get(0).get("state")).isEqualTo("");
     }
 }
