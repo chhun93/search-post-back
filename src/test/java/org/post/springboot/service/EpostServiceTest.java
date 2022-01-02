@@ -170,6 +170,44 @@ public class EpostServiceTest {
         assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
         assertThat(result.get(0).get("time")).isEqualTo("11:12");
         assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
-        assertThat(result.get(0).get("state")).isEqualTo("");
+        assertThat(result.get(0).get("state")).isEmpty();
+    }
+
+    @Test
+    public void 위치_없는_형식_파싱() {
+        //given
+        String body = "<table id=\"processTable\" class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "        <tr>\n" +
+                "            <td>1993.04.11</td>\n" +
+                "            <td>11:12</td>\n" +
+                "            <td></td>\n" +
+                "            <td>\n" +
+                "\t\t\t\t배달준비 <a href=\"javascript:fncDetailInfo('1231231231231','20210813',3,'89958','1','0','0') \" title=\"새창열림\"><span style=\"color:blue;\">(집배원 정보 보기)</span></a>\n" +
+                "            \n" +
+                "            \n" +
+                "            \n" +
+                "\n" +
+                "\t\t\t</td>\n" +
+                "        </tr>\n" +
+                "       \t  \n" +
+                "\n" +
+                "        \t\n" +
+                "\t\t\t\t</tbody>" +
+                "</table>";
+
+        //when
+        List<Map<String, String>> result = apiService.getProcessList(body);
+
+        //then
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
+        assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("position")).isEmpty();
+        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
     }
 }
