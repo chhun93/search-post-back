@@ -35,6 +35,11 @@ public class EpostService implements ApiService {
                 resultMap.put("date", tdList.get(0).text());
                 resultMap.put("time", tdList.get(1).text());
 
+                if (tdList.get(2).getElementsByTag("span").isEmpty()) {
+                    resultMap.put("position", tdList.get(2).getElementsByTag("a").text());
+                } else {
+                    resultMap.put("position", tdList.get(2).getElementsByTag("span").text());
+                }
                 if (tdList.get(3).text().contains(" ")) {
                     resultMap.put("state", tdList.get(3).text().substring(0, tdList.get(3).text().indexOf(" ")));
                 } else {
