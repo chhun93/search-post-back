@@ -55,6 +55,7 @@ public class EpostServiceTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).get("date")).isEqualTo("2021.08.13");
         assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).get("state")).isEqualTo("배달준비");
     }
 
@@ -94,6 +95,7 @@ public class EpostServiceTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).get("date")).isEmpty();
         assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).get("state")).isEqualTo("배달준비");
     }
 
@@ -133,6 +135,7 @@ public class EpostServiceTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
         assertThat(result.get(0).get("time")).isEmpty();
+        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).get("state")).isEqualTo("배달준비");
     }
 
@@ -148,7 +151,9 @@ public class EpostServiceTest {
                 "        <tr>\n" +
                 "            <td>1993.04.11</td>\n" +
                 "            <td>11:12</td>\n" +
-                "            <td></td>\n" +
+                "            <td><a href=\"#\" onclick=\"return goPostDetail(89958, '배달준비', event)\" onkeypress=\"return goPostDetail(89958, '배달준비', event)\" title=\"새창열림\"><span style=\"color:blue\">우정사업정보센터</span></a>\n" +
+                "            \t<br>TEL : 061.338.9999\n" +
+                "            </td>\n" +
                 "            <td></td>\n" +
                 "        </tr>\n" +
                 "       \t  \n" +
@@ -164,6 +169,7 @@ public class EpostServiceTest {
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
         assertThat(result.get(0).get("time")).isEqualTo("11:12");
+        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).get("state")).isEqualTo("");
     }
 }
