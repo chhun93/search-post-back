@@ -1,5 +1,9 @@
 package org.post.springboot.service;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,35 +24,22 @@ public class EpostService implements ApiService {
         List<Map<String, String>> resultList = new ArrayList<>();
 
         try {
-            int processTablePosition = body.indexOf("processTable");
-            int tbodyStartPosition = body.indexOf("tbody", processTablePosition);
-            int tbodyEndPosition = body.indexOf("/tbody", tbodyStartPosition);
+            Document doc = Jsoup.parse(body);
+            Element processTable = doc.getElementById("processTable");
+            Elements tbody = processTable.getElementsByTag("tbody");
+            Elements trList = tbody.get(0).getElementsByTag("tr");
 
-            String[] stateList = body.substring(tbodyStartPosition, tbodyEndPosition)
-                    .replaceAll("</tr>", " ")
-                    .split("<tr>");
-
-            stateList = Arrays.copyOfRange(stateList, 1, stateList.length);
-
-            for (String word : stateList) {
+            for (Element tr : trList) {
                 Map<String, String> resultMap = new HashMap<>();
-                int start = word.indexOf("<td>");
-                int end = word.indexOf("</td>", start);
-                String ret = word.substring(start + 4, end);
-                resultMap.put("date", ret);
+                Elements tdList = tr.getElementsByTag("td");
+                resultMap.put("date", tdList.get(0).text());
+                resultMap.put("time", tdList.get(1).text());
 
-                start = word.indexOf("<td>", end);
-                end = word.indexOf("</td>", start);
-                ret = word.substring(start + 4, end);
-                resultMap.put("time", ret);
-
-                end = word.indexOf("</td>", end + 1);
-
-                start = word.indexOf("<td>", end);
-                end = word.indexOf(" ", start);
-                ret = word.substring(start + 4, end).trim();
-                resultMap.put("state", ret);
-
+                if (tdList.get(3).text().contains(" ")) {
+                    resultMap.put("state", tdList.get(3).text().substring(0, tdList.get(3).text().indexOf(" ")));
+                } else {
+                    resultMap.put("state", tdList.get(3).text());
+                }
                 resultList.add(resultMap);
             }
         } catch (Exception ex) {
