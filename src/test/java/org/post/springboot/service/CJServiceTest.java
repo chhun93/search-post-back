@@ -37,4 +37,21 @@ public class CJServiceTest {
         //then
         assertThat(csrf).isEqualTo("f34f8a9f-4738-4aeb-92b7-6900d9594ae0");
     }
+
+    @Test
+    public void CSRF토큰_없는값_파싱() {
+        //given
+        String body = "<html lang=\"ko\"><head></head><body>" +
+                "<form name=\"frmUnifiedSearch\" id=\"frmUnifiedSearch\" method=\"post\">\n" +
+                "\t\t<input type=\"hidden\" title=\"인증키\">" +
+                "</form>" +
+                "</body>" +
+                "</html>";
+
+        //when
+        String csrf = service.getCSRF(body);
+
+        //then
+        assertThat(csrf).isEmpty();
+    }
 }
