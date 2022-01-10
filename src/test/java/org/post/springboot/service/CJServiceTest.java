@@ -4,7 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,5 +80,20 @@ public class CJServiceTest {
 
         //then
         assertThat(session).isEmpty();
+    }
+
+    @Test
+    public void API_호출_성공() {
+        //given
+        String URL = "https://www.cjlogistics.com/ko/tool/parcel/tracking";
+        ResponseEntity<String> responseEntity = new RestTemplate().getForEntity(URL, String.class);
+        String csrf = service.getCSRF(responseEntity.getBody());
+        String session = service.getSession(responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE));
+
+        //when
+        Object result = service.doPost(csrf, "553825406594", session);
+
+        //then
+        assertThat(result).isNotNull();
     }
 }
