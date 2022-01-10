@@ -3,10 +3,13 @@ package org.post.springboot.service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -17,6 +20,7 @@ import java.util.Map;
 public class CJService implements ApiService {
 
     private static final String URL = "https://www.cjlogistics.com/ko/tool/parcel/tracking";
+    private static final String DETAIL_URL = "https://www.cjlogistics.com/ko/tool/parcel/tracking-detail";
 
     public String getCSRF(String body) {
         Document doc = Jsoup.parse(body);
@@ -41,6 +45,27 @@ public class CJService implements ApiService {
             }
         }
         return result;
+    }
+
+    public Object doPost(String csrf, String number, String session) {
+        if (csrf.isEmpty() || number.isEmpty() || session.isEmpty()) {
+            return null;
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("_csrf", csrf);
+        requestBody.add("paramInvcNo", number);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        headers.add(HttpHeaders.COOKIE, "JSESSIONID=" + session);
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Object> responseEntity = restTemplate.postForEntity(DETAIL_URL, httpEntity, Object.class);
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            return responseEntity.getBody();
+        }
+        return null;
     }
 
     @Override
