@@ -65,4 +65,17 @@ public class CJServiceTest {
         //then
         assertThat(session).isEqualTo("130F6636D0A5FFD5922E42296FBDA2E1.front21");
     }
+
+    @Test
+    public void 세션_없는값_파싱() {
+        //given
+        List<String> cookies = new ArrayList<>();
+        cookies.add("cjlogisticsFrontLangCookie=ko; Expires=Tue, 11-Jan-2022 14:48:05 GMT; Path=/");
+
+        //when
+        String session = service.getSession(cookies);
+
+        //then
+        assertThat(session).isEmpty();
+    }
 }
