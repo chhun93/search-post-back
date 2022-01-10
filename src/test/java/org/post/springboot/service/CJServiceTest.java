@@ -1,16 +1,13 @@
 package org.post.springboot.service;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,5 +50,19 @@ public class CJServiceTest {
 
         //then
         assertThat(csrf).isEmpty();
+    }
+
+    @Test
+    public void 세션_올바른값_파싱() {
+        //given
+        List<String> cookies = new ArrayList<>();
+        cookies.add("cjlogisticsFrontLangCookie=ko; Expires=Tue, 11-Jan-2022 14:48:05 GMT; Path=/");
+        cookies.add("JSESSIONID=130F6636D0A5FFD5922E42296FBDA2E1.front21; Path=/; HttpOnly");
+
+        //when
+        String session = service.getSession(cookies);
+
+        //then
+        assertThat(session).isEqualTo("130F6636D0A5FFD5922E42296FBDA2E1.front21");
     }
 }
