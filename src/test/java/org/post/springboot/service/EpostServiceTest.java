@@ -3,12 +3,12 @@ package org.post.springboot.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.post.springboot.dto.ParcelDetailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,14 +49,14 @@ public class EpostServiceTest {
                 "</table>";
 
         //when
-        List<Map<String, String>> result = apiService.getProcessList(body);
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("2021.08.13");
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.get(0).getDate()).isEqualTo("2021.08.13");
+        assertThat(result.get(0).getTime()).isEqualTo("11:12");
+        assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
+        assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
 
     @Test
@@ -89,14 +89,14 @@ public class EpostServiceTest {
                 "</table>";
 
         //when
-        List<Map<String, String>> result = apiService.getProcessList(body);
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEmpty();
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.get(0).getDate()).isEmpty();
+        assertThat(result.get(0).getTime()).isEqualTo("11:12");
+        assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
+        assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
 
     @Test
@@ -129,14 +129,14 @@ public class EpostServiceTest {
                 "</table>";
 
         //when
-        List<Map<String, String>> result = apiService.getProcessList(body);
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
-        assertThat(result.get(0).get("time")).isEmpty();
-        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
+        assertThat(result.get(0).getTime()).isEmpty();
+        assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
+        assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
 
     @Test
@@ -163,14 +163,14 @@ public class EpostServiceTest {
                 "</table>";
 
         //when
-        List<Map<String, String>> result = apiService.getProcessList(body);
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("position")).isEqualTo("우정사업정보센터");
-        assertThat(result.get(0).get("state")).isEmpty();
+        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
+        assertThat(result.get(0).getTime()).isEqualTo("11:12");
+        assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
+        assertThat(result.get(0).getState()).isEmpty();
     }
 
     @Test
@@ -201,13 +201,13 @@ public class EpostServiceTest {
                 "</table>";
 
         //when
-        List<Map<String, String>> result = apiService.getProcessList(body);
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).get("date")).isEqualTo("1993.04.11");
-        assertThat(result.get(0).get("time")).isEqualTo("11:12");
-        assertThat(result.get(0).get("position")).isEmpty();
-        assertThat(result.get(0).get("state")).isEqualTo("배달준비");
+        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
+        assertThat(result.get(0).getTime()).isEqualTo("11:12");
+        assertThat(result.get(0).getPosition()).isEmpty();
+        assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
 }
