@@ -3,6 +3,7 @@ package org.post.springboot.service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.post.springboot.dto.ParcelDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CJService implements ApiService {
@@ -69,16 +68,14 @@ public class CJService implements ApiService {
     }
 
     @Override
-    public Map<String, Object> execute(String number) {
+    public ParcelDto execute(String number) {
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> result = new HashMap<>();
+        ParcelDto result = new ParcelDto();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL, String.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String csrf = getCSRF(responseEntity.getBody());
             String session = getSession(responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE));
-        } else {
-            result.put("result", null);
         }
         return result;
     }
