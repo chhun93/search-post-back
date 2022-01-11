@@ -1,7 +1,7 @@
 package org.post.springboot.service;
 
-import java.util.Map;
+import org.post.springboot.dto.ParcelDto;
 
 public interface ApiService {
-    Map<String, Object> execute(String number);
+    ParcelDto execute(String number);
 }
