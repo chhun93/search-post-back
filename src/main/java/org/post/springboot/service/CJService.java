@@ -46,7 +46,7 @@ public class CJService implements ApiService {
         return result;
     }
 
-    public Object doPost(String csrf, String number, String session) {
+    public String doPost(String csrf, String number, String session) {
         if (csrf.isEmpty() || number.isEmpty() || session.isEmpty()) {
             return null;
         }
@@ -60,7 +60,7 @@ public class CJService implements ApiService {
         headers.add(HttpHeaders.COOKIE, "JSESSIONID=" + session);
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<Object> responseEntity = restTemplate.postForEntity(DETAIL_URL, httpEntity, Object.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(DETAIL_URL, httpEntity, String.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return responseEntity.getBody();
         }
