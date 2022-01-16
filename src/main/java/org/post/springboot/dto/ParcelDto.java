@@ -8,10 +8,6 @@ public class ParcelDto {
 
     private List<ParcelDetailDto> result;
 
-    public ParcelDto() {
-
-    }
-
     public String getCompanyName() {
         return companyName;
     }

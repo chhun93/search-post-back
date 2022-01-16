@@ -16,10 +16,6 @@ public class ParcelDetailDto {
 
     private String state;
 
-    public ParcelDetailDto() {
-
-    }
-
     public LocalDate getDate() {
         return date;
     }
