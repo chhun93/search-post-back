@@ -1,6 +1,7 @@
 package org.post.springboot.web;
 
 import org.post.springboot.service.ApiService;
+import org.post.springboot.service.CJService;
 import org.post.springboot.service.EpostService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ public class PostApiController {
     public PostApiController() {
         serviceMap = new HashMap<>();
         serviceMap.put("epost", new EpostService());
+        serviceMap.put("cj", new CJService());
     }
 
     @GetMapping(path = "/api/v1/post-man")
@@ -28,6 +30,7 @@ public class PostApiController {
         Map<String, List<Object>> result = new HashMap<>();
         result.put("response", new ArrayList<>());
         result.get("response").add(serviceMap.get("epost").execute(trackingNumber));
+        result.get("response").add(serviceMap.get("cj").execute(trackingNumber));
         return result;
     }
 
