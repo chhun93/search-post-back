@@ -34,6 +34,9 @@ public class EpostService implements ApiService {
         try {
             Document doc = Jsoup.parse(body);
             Element processTable = doc.getElementById("processTable");
+            if (processTable == null) {
+                return resultList;
+            }
             Elements tbody = processTable.getElementsByTag("tbody");
             Elements trList = tbody.get(0).getElementsByTag("tr");
 
