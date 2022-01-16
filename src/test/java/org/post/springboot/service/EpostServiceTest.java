@@ -53,7 +53,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getDate()).isEqualTo("2021.08.13");
+        assertThat(result.get(0).getDate().toString()).isEqualTo("2021-08-13");
         assertThat(result.get(0).getTime()).isEqualTo("11:12");
         assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).getState()).isEqualTo("배달준비");
@@ -93,7 +93,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getDate()).isEmpty();
+        assertThat(result.get(0).getDate()).isNull();
         assertThat(result.get(0).getTime()).isEqualTo("11:12");
         assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).getState()).isEqualTo("배달준비");
@@ -133,8 +133,8 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
-        assertThat(result.get(0).getTime()).isEmpty();
+        assertThat(result.get(0).getDate().toString()).isEqualTo("1993-04-11");
+        assertThat(result.get(0).getTime()).isNull();
         assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
@@ -167,7 +167,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
+        assertThat(result.get(0).getDate().toString()).isEqualTo("1993-04-11");
         assertThat(result.get(0).getTime()).isEqualTo("11:12");
         assertThat(result.get(0).getPosition()).isEqualTo("우정사업정보센터");
         assertThat(result.get(0).getState()).isEmpty();
@@ -205,7 +205,7 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getDate()).isEqualTo("1993.04.11");
+        assertThat(result.get(0).getDate().toString()).isEqualTo("1993-04-11");
         assertThat(result.get(0).getTime()).isEqualTo("11:12");
         assertThat(result.get(0).getPosition()).isEmpty();
         assertThat(result.get(0).getState()).isEqualTo("배달준비");
