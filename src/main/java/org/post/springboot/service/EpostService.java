@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +40,13 @@ public class EpostService implements ApiService {
             for (Element tr : trList) {
                 ParcelDetailDto resultMap = new ParcelDetailDto();
                 Elements tdList = tr.getElementsByTag("td");
-                resultMap.setDate(tdList.get(0).text());
-                resultMap.setTime(tdList.get(1).text());
+
+                if (!tdList.get(0).text().isEmpty()) {
+                    resultMap.setDate(LocalDate.parse(tdList.get(0).text(), DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+                }
+                if (!tdList.get(1).text().isEmpty()) {
+                    resultMap.setTime(LocalTime.parse(tdList.get(1).text()));
+                }
 
                 if (tdList.get(2).getElementsByTag("span").isEmpty()) {
                     resultMap.setPosition(tdList.get(2).getElementsByTag("a").text());
