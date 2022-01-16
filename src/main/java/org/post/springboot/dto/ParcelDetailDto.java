@@ -1,10 +1,16 @@
 package org.post.springboot.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class ParcelDetailDto {
 
-    private String date;
+    private LocalDate date;
 
-    private String time;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime time;
 
     private String position;
 
@@ -14,19 +20,19 @@ public class ParcelDetailDto {
 
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
