@@ -1,9 +1,16 @@
 package org.post.springboot.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.post.springboot.dto.CJ.ResponseDto;
+import org.post.springboot.dto.CJ.Result;
+import org.post.springboot.dto.ParcelDetailDto;
 import org.post.springboot.dto.ParcelDto;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +20,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,15 +80,40 @@ public class CJService implements ApiService {
         return null;
     }
 
+    public List<ParcelDetailDto> getProcessList(String body) {
+        List<ParcelDetailDto> resultList = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new JavaTimeModule());
+
+        try {
+            ResponseDto responseDto = mapper.readValue(body, ResponseDto.class);
+            for (Result processDto : responseDto.getParcelDetailResultMap().getResultList()) {
+                ParcelDetailDto parcelDetailDto = new ParcelDetailDto();
+                parcelDetailDto.setDate(processDto.getdTime().toLocalDate());
+                parcelDetailDto.setTime(processDto.getdTime().toLocalTime());
+                parcelDetailDto.setPosition(processDto.getRegBranNm());
+                parcelDetailDto.setState(processDto.getScanNm());
+                resultList.add(parcelDetailDto);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return resultList;
+    }
+
     @Override
     public ParcelDto execute(String number) {
         RestTemplate restTemplate = new RestTemplate();
         ParcelDto result = new ParcelDto();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL, String.class);
+        result.setCompanyName("cj");
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String csrf = getCSRF(responseEntity.getBody());
             String session = getSession(responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE));
+            String body = doPost(csrf, number, session);
+            result.setResult(getProcessList(body));
         }
         return result;
     }
