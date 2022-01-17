@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -273,5 +276,43 @@ public class EpostServiceTest {
 
         //then
         assertThat(element).isNull();
+    }
+
+    @Test
+    public void 올바른_Date_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+
+        //when
+        LocalDate date = apiService.getParseDate(list);
+
+        //then
+        assertThat(date.toString()).isEqualTo("1993-04-11");
+    }
+
+    @Test
+    public void 틀린_형식_Date_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993-04-11"));
+
+        //when then
+        assertThatThrownBy(() -> {
+            apiService.getParseDate(list);
+        }).isInstanceOf(DateTimeParseException.class);
+    }
+
+    @Test
+    public void 비어있는_형식_Date_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText(""));
+
+        //when
+        LocalDate date = apiService.getParseDate(list);
+
+        //then
+        assertThat(date).isNull();
     }
 }
