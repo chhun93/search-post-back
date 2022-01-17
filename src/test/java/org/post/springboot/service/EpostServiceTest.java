@@ -1,6 +1,8 @@
 package org.post.springboot.service;
 
 
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.post.springboot.dto.ParcelDetailDto;
@@ -243,5 +245,33 @@ public class EpostServiceTest {
 
         //then
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void 올바른_인덱스_Element_반환() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td"));
+        list.add(new Element("td"));
+
+        //when
+        Element element = apiService.getElementOfList(list, 0);
+
+        //then
+        assertThat(element).isEqualTo(list.get(0));
+    }
+
+    @Test
+    public void 벗어난_인덱스_Element_Null_반환() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td"));
+        list.add(new Element("td"));
+
+        //when
+        Element element = apiService.getElementOfList(list, 2);
+
+        //then
+        assertThat(element).isNull();
     }
 }
