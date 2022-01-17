@@ -210,4 +210,38 @@ public class EpostServiceTest {
         assertThat(result.get(0).getPosition()).isEmpty();
         assertThat(result.get(0).getState()).isEqualTo("배달준비");
     }
+
+    @Test
+    public void processTable_없는_형식_파싱() {
+        //given
+        String body = "<table id=test class=\"table_col detail_off>\"" +
+                "<tbody>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "        <tr>\n" +
+                "            <td>1993.04.11</td>\n" +
+                "            <td>11:12</td>\n" +
+                "            <td></td>\n" +
+                "            <td>\n" +
+                "\t\t\t\t배달준비 <a href=\"javascript:fncDetailInfo('1231231231231','20210813',3,'89958','1','0','0') \" title=\"새창열림\"><span style=\"color:blue;\">(집배원 정보 보기)</span></a>\n" +
+                "            \n" +
+                "            \n" +
+                "            \n" +
+                "\n" +
+                "\t\t\t</td>\n" +
+                "        </tr>\n" +
+                "       \t  \n" +
+                "\n" +
+                "        \t\n" +
+                "\t\t\t\t</tbody>" +
+                "</table>";
+
+        //when
+        List<ParcelDetailDto> result = apiService.getProcessList(body);
+
+        //then
+        assertThat(result.size()).isEqualTo(0);
+    }
 }
