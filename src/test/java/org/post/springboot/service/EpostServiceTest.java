@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -314,5 +315,46 @@ public class EpostServiceTest {
 
         //then
         assertThat(date).isNull();
+    }
+
+    @Test
+    public void 올바른_Time_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+
+        //when
+        LocalTime time = apiService.getParseTime(list);
+
+        //then
+        assertThat(time.toString()).isEqualTo("12:00");
+    }
+
+    @Test
+    public void 틀린_형식_Time_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("01:77"));
+
+        //when then
+        assertThatThrownBy(() -> {
+            apiService.getParseTime(list);
+        }).isInstanceOf(DateTimeParseException.class);
+    }
+
+    @Test
+    public void 비어있는_형식_Time_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText(""));
+
+        //when
+        LocalTime time = apiService.getParseTime(list);
+
+        //then
+        assertThat(time).isNull();
     }
 }
