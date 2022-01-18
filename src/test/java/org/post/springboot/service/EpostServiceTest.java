@@ -357,4 +357,64 @@ public class EpostServiceTest {
         //then
         assertThat(time).isNull();
     }
+
+    @Test
+    public void Span태그_존재_올바른_Position_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendElement("span").appendText("우체국"));
+
+        //when
+        String position = apiService.getParsePosition(list);
+
+        //then
+        assertThat(position).isEqualTo("우체국");
+    }
+
+    @Test
+    public void Span태그_미존재_올바른_Position_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendElement("a").appendText("우체국"));
+
+        //when
+        String position = apiService.getParsePosition(list);
+
+        //then
+        assertThat(position).isEqualTo("우체국");
+    }
+
+    @Test
+    public void 틀린_형식_Position_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendText("우체국"));
+
+        //when
+        String position = apiService.getParsePosition(list);
+
+        //then
+        assertThat(position).isEmpty();
+    }
+
+    @Test
+    public void 비어있는_형식_Position_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendText(""));
+
+        //when
+        String position = apiService.getParsePosition(list);
+
+        //then
+        assertThat(position).isEmpty();
+    }
 }
