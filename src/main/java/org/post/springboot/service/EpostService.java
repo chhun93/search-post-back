@@ -24,6 +24,48 @@ public class EpostService implements ApiService {
 
     private static final String URL = "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1={sid1}";
 
+    public Element getElementOfList(Elements tdList, int index) {
+        return index < tdList.size() ? tdList.get(index) : null;
+    }
+
+    public LocalDate getParseDate(Elements tdList) {
+        Element element = getElementOfList(tdList, 0);
+        if (element == null || element.text().isEmpty()) {
+            return null;
+        }
+        return LocalDate.parse(element.text(), DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+    }
+
+    public LocalTime getParseTime(Elements tdList) {
+        Element element = getElementOfList(tdList, 1);
+        if (element == null || element.text().isEmpty()) {
+            return null;
+        }
+        return LocalTime.parse(element.text());
+    }
+
+    public String getParsePosition(Elements tdList) {
+        Element element = getElementOfList(tdList, 2);
+        if (element == null) {
+            return null;
+        }
+        if (element.getElementsByTag("span").isEmpty()) {
+            return element.getElementsByTag("a").text();
+        }
+        return element.getElementsByTag("span").text();
+    }
+
+    public String getParseState(Elements tdList) {
+        Element element = getElementOfList(tdList, 3);
+        if (element == null) {
+            return null;
+        }
+        if (element.text().contains(" ")) {
+            return element.text().substring(0, element.text().indexOf(" "));
+        }
+        return element.text();
+    }
+
     public List<ParcelDetailDto> getProcessList(String body) {
         if (body == null) {
             return null;
@@ -41,26 +83,12 @@ public class EpostService implements ApiService {
             Elements trList = tbody.get(0).getElementsByTag("tr");
 
             for (Element tr : trList) {
-                ParcelDetailDto resultMap = new ParcelDetailDto();
                 Elements tdList = tr.getElementsByTag("td");
-
-                if (!tdList.get(0).text().isEmpty()) {
-                    resultMap.setDate(LocalDate.parse(tdList.get(0).text(), DateTimeFormatter.ofPattern("yyyy.MM.dd")));
-                }
-                if (!tdList.get(1).text().isEmpty()) {
-                    resultMap.setTime(LocalTime.parse(tdList.get(1).text()));
-                }
-
-                if (tdList.get(2).getElementsByTag("span").isEmpty()) {
-                    resultMap.setPosition(tdList.get(2).getElementsByTag("a").text());
-                } else {
-                    resultMap.setPosition(tdList.get(2).getElementsByTag("span").text());
-                }
-                if (tdList.get(3).text().contains(" ")) {
-                    resultMap.setState(tdList.get(3).text().substring(0, tdList.get(3).text().indexOf(" ")));
-                } else {
-                    resultMap.setState(tdList.get(3).text());
-                }
+                ParcelDetailDto resultMap = new ParcelDetailDto();
+                resultMap.setDate(getParseDate(tdList));
+                resultMap.setTime(getParseTime(tdList));
+                resultMap.setPosition(getParsePosition(tdList));
+                resultMap.setState(getParseState(tdList));
                 resultList.add(resultMap);
             }
         } catch (Exception ex) {
