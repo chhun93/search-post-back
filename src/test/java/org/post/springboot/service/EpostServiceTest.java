@@ -417,4 +417,52 @@ public class EpostServiceTest {
         //then
         assertThat(position).isEmpty();
     }
+
+    @Test
+    public void 공백_존재_올바른_State_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendElement("a").appendText("우체국"));
+        list.add(new Element("td").appendText("배달준비 "));
+
+        //when
+        String state = apiService.getParseState(list);
+
+        //then
+        assertThat(state).isEqualTo("배달준비");
+    }
+
+    @Test
+    public void 공백_미존재_올바른_State_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendElement("a").appendText("우체국"));
+        list.add(new Element("td").appendText("배달준비"));
+
+        //when
+        String state = apiService.getParseState(list);
+
+        //then
+        assertThat(state).isEqualTo("배달준비");
+    }
+
+    @Test
+    public void 비어있는_형식_State_값_파싱() {
+        //given
+        Elements list = new Elements();
+        list.add(new Element("td").appendText("1993.04.11"));
+        list.add(new Element("td").appendText("12:00"));
+        list.add(new Element("td").appendElement("a").appendText("우체국"));
+        list.add(new Element("td").appendText(""));
+
+        //when
+        String state = apiService.getParseState(list);
+
+        //then
+        assertThat(state).isEmpty();
+    }
 }
