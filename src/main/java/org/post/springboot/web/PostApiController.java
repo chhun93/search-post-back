@@ -4,7 +4,6 @@ import org.post.springboot.service.ApiService;
 import org.post.springboot.service.CJService;
 import org.post.springboot.service.EpostService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,10 +31,5 @@ public class PostApiController {
         result.get("response").add(serviceMap.get("epost").execute(trackingNumber));
         result.get("response").add(serviceMap.get("cj").execute(trackingNumber));
         return result;
-    }
-
-    @GetMapping(path = "/api/v1/post-man/{id}")
-    public Map<String, Object> getState(@PathVariable int id, @RequestParam(name = "tracking-number") String trackingNumber) {
-        return null;
     }
 }
