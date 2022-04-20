@@ -3,6 +3,7 @@ package org.post.springboot.web;
 import org.post.springboot.service.ApiService;
 import org.post.springboot.service.CJService;
 import org.post.springboot.service.EpostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,20 +17,21 @@ import java.util.Map;
 @RestController
 public class PostApiController {
 
-    private Map<String, ApiService> serviceMap;
+    private final Map<String, ApiService> serviceMap = new HashMap<>();
 
-    public PostApiController() {
-        serviceMap = new HashMap<>();
-        serviceMap.put("epost", new EpostService());
-        serviceMap.put("cj", new CJService());
+    @Autowired
+    public PostApiController(EpostService epostService, CJService cjService) {
+        serviceMap.put("epost", epostService);
+        serviceMap.put("cj", cjService);
     }
 
     @GetMapping(path = "/api/v1/post-man")
     public Map<String, List<Object>> getList(@RequestParam(name = "tracking-number") String trackingNumber) {
         Map<String, List<Object>> result = new HashMap<>();
         result.put("response", new ArrayList<>());
-        result.get("response").add(serviceMap.get("epost").execute(trackingNumber));
-        result.get("response").add(serviceMap.get("cj").execute(trackingNumber));
+        for (ApiService apiService : serviceMap.values()) {
+            result.get("response").add(apiService.execute(trackingNumber));
+        }
         return result;
     }
 }
